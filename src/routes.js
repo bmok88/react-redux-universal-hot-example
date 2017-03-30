@@ -13,7 +13,7 @@ import {
     NotFound,
     Pagination,
   } from 'containers';
-
+import WeatherTable from './components/weather/weatherTable.js';
 export default (store) => {
   const requireLogin = (nextState, replace, cb) => {
     function checkAuth() {
@@ -52,7 +52,7 @@ export default (store) => {
       <Route path="pagination" component={Pagination}/>
       <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>
-      <Route path="weather" component={Weather}/>
+      <Route path="weather" component={WeatherTable}/>
 
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
