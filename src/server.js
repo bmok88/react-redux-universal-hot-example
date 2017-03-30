@@ -11,14 +11,14 @@ import ApiClient from './helpers/ApiClient';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
-
+import request from 'request';
 import { match } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import createHistory from 'react-router/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
 import getRoutes from './routes';
-
+import bodyParser from 'body-parser';
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const pretty = new PrettyError();
 const app = new Express();
@@ -28,6 +28,8 @@ const proxy = httpProxy.createProxyServer({
   ws: true
 });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 
@@ -40,6 +42,15 @@ app.use('/api', (req, res) => {
 
 app.use('/ws', (req, res) => {
   proxy.web(req, res, {target: targetUrl + '/ws'});
+});
+
+app.post('/weather', (req, res) => {
+  console.log(req.body, req.query, req.params)
+  var url = 'http://api.openweathermap.org/data/2.5/weather?zip=' + req.body.zip + ',us&appid=3b12ada7c114c8c07bea47797cf3ab0a';
+  request(url, function(err, response, body) {
+    if (err) throw err;
+    res.send(response);
+  });
 });
 
 server.on('upgrade', (req, socket, head) => {

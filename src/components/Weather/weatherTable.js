@@ -1,5 +1,10 @@
 import React from 'react';
-import $ from 'jquery';
+import jquery from 'jquery';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {reduxForm} from 'redux-form';
+import * as weatherActions from 'redux/modules/weather';
 
 export default class WeatherTable extends React.Component {
   constructor(props) {
@@ -12,8 +17,14 @@ export default class WeatherTable extends React.Component {
     event.preventDefault();
     console.log('here');
     console.log(this.refs.zip.value);
-
-
+    const zipCode = {
+      zip: this.refs.zip.value
+    };
+    console.log(zipCode, 'zipcode');
+    jquery.post('/weather', zipCode).done(data => {
+      console.log(data);
+    });
+    this.refs.zip.value = '';
   }
 
   render() {

@@ -53,6 +53,7 @@ export default (store) => {
       <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>
       <Route path="weather" component={WeatherTable}/>
+      <Route path="/api/weather"/>
 
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
